@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOVA NIMBVX PRO — The Price-Conscious</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:      #000000;
+      --white:      #ffffff;
+      --accent:     #b21235;
+      --gray-hero:  #dbdbdb;
+      --gray-light: #f5f5f5;
+      --gray-div:   #e0e0e0;
+      --gray-mid:   #808080;
+      --gray-bdr:   #b3b3b3;
+      --footer-bg:  #141414;
+      --gold:       #f9a200;
+      --pad:        96px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--black);
+      background: var(--white);
+    }
+
+    /* ── Promo Ribbon ─────────────────────────────────────────────────────── */
+    .promo {
+      position: relative;
+      z-index: 400;
+      background: var(--accent);
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.03em;
+      overflow: hidden;
+    }
+
+    /* ── Navigation ───────────────────────────────────────────────────────── */
+    .nav {
+      background: var(--black);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--pad);
+      position: relative;
+    }
+
+    .nav__brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 24px;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav__links {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav__links a {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      position: relative;
+    }
+
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 1px;
+      background: var(--white);
+      transform: translateY(4px);
+      opacity: 0;
+      transition: transform 0.22s ease, opacity 0.18s ease;
+    }
+
+    .nav__links a:not(.active):hover::after {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @keyframes nav-underline-in {
+      from { transform: translateY(4px); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+
+    .nav__links a.active { text-decoration: none; }
+    .nav__links a.active::after {
+      transform: translateY(0);
+      opacity: 1;
+      animation: nav-underline-in 0.4s ease forwards;
+    }
+
+    .nav__actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav__actions a {
+      font-size: 13px;
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .nav__actions a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 1px;
+      background: var(--white);
+      transform: translateY(4px);
+      opacity: 0;
+      transition: transform 0.22s ease, opacity 0.18s ease;
+    }
+
+    .nav__actions a:hover::after {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ── Hamburger ────────────────────────────────────────────────────────── */
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 16px;
+      flex-shrink: 0;
+    }
+
+    .nav__hamburger .bar {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--white);
+      transition: transform 0.22s ease, opacity 0.22s ease;
+      transform-origin: center;
+    }
+
+    /* ── Mobile Menu ──────────────────────────────────────────────────────── */
+    .nav__mobile-menu {
+      position: fixed;
+      top: 44px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #000;
+      z-index: 300;
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s ease, opacity 0.25s ease;
+    }
+
+    .nav__mobile-menu.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav__close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      color: var(--white);
+    }
+
+    .nav__close svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--white);
+      stroke-width: 2;
+    }
+
+    .nav__mobile-menu ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 20px 32px;
+      gap: 20px;
+    }
+
+    .nav__mobile-menu a {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .nav__mobile-menu li { margin-top: 5px; }
+    .nav__mobile-menu a.active { text-decoration: underline; }
+
+    /* ── Hero ─────────────────────────────────────────────────────────────── */
+    .hero {
+      display: flex;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    .hero__image {
+      flex: 0 0 50%;
+      background: var(--gray-hero);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero__image img {
+      position: absolute;
+      width: 145%;
+      height: 145%;
+      object-fit: cover;
+      object-position: center;
+      top: -22%;
+      left: -20%;
+    }
+
+    .hero__info {
+      flex: 0 0 50%;
+      background: var(--white);
+      padding: 48px var(--pad);
+      display: flex;
+      align-items: center;
+    }
+
+    .hero__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    .hero__title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 30px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .hero__subtitle {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-top: 12px;
+    }
+
+    .hero__price {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      margin-top: 10px;
+    }
+
+    .hero__cost-callout {
+      display: flex;
+      gap: 6px;
+      align-items: baseline;
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .hero__cost-callout .callout-val { font-weight: 700; }
+    .hero__cost-callout .callout-note { font-weight: 400; color: #000; }
+
+    .hero__rating {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
+      margin-top: 10px;
+      font-size: 0;
+    }
+
+    .hero__rating .stars { color: var(--gold); font-size: 32px; width: 100%; line-height: 1.1; margin-bottom: 8px; }
+    .hero__rating .gap   { display: none; }
+    .hero__rating .score { font-size: 14px; font-weight: 700; color: var(--black); }
+    .hero__rating .count { font-size: 14px; color: var(--black); }
+
+    /* Bundle selector */
+    .hero__purchase {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      margin-top: 24px;
+      min-width: 260px;
+    }
+
+    .bundle-select {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bundle-select__label {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .bundle-btn {
+      width: 280px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--gray-bdr);
+      background: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .bundle-btn:hover { border-color: var(--black); }
+    .bundle-btn.selected { border-color: var(--black); border-width: 2px; }
+
+    .bundle-btn__name { font-weight: 700; }
+    .bundle-btn__save { font-weight: 700; font-size: 12px; color: var(--accent); }
+
+    /* CTA */
+    .hero__cta {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1;
+      padding: 18px 28px;
+      margin-top: 16px;
+      text-decoration: none;
+      width: 100%;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      text-align: center;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .hero__cta:hover  { background: #fff; color: #9a0f2e; box-shadow: inset 0 0 0 2px #9a0f2e; }
+    .hero__cta:active { background: #f5f5f5; color: #9a0f2e; box-shadow: inset 0 0 0 2px #9a0f2e; }
+
+    /* ── Section title shared ─────────────────────────────────────────────── */
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+    /* ── Cost-Per-Km Calculator ───────────────────────────────────────────── */
+    .calc-section {
+      background: var(--black);
+      color: var(--white);
+      display: flex;
+    }
+
+    .calc-section__image {
+      flex: 0 0 35%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .calc-section__image img {
+      position: absolute;
+      width: 100%;
+      height: 115%;
+      object-fit: cover;
+      left: 0%;
+      top: 0;
+    }
+
+    .calc-section__content {
+      flex: 0 0 65%;
+      padding: 48px var(--pad);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .calc-section .section-title { color: var(--white); margin-bottom: 42px; }
+
+    .calc-widget {
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 0 32px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .calc-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .calc-col__label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .calc-col__value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--white);
+    }
+
+    .calc-col__value.accent { color: var(--accent); }
+
+    .calc-col__sub {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--white);
+    }
+
+    .calc-range {
+      width: 100%;
+      margin-top: 4px;
+      accent-color: var(--accent);
+    }
+
+    .calc-arrow {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--white);
+      justify-self: center;
+    }
+
+    .calc-compare {
+      margin-top: 40px;
+      width: 100%;
+      padding: 14px 20px;
+      border-left: 3px solid var(--accent);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--white);
+    }
+
+    .calc-compare strong { color: var(--accent); }
+
+    /* ── Full Technical Specs ────────────────────────────────────────────── */
+    .specs-section {
+      background: var(--white);
+      display: flex;
+      align-items: flex-start;
+      padding: 48px 0 0 var(--pad);
+    }
+
+    .specs-section__left { flex: 0 0 54%; position: relative; z-index: 2; }
+    .specs-section__left .section-title { margin-bottom: 24px; }
+
+    .specs-table {
+      border: 1px solid var(--gray-bdr);
+      max-width: 677px;
+    }
+
+    .specs-row {
+      display: flex;
+      border-bottom: 1px solid var(--gray-div);
+    }
+
+    .specs-row:last-child { border-bottom: none; }
+    .specs-row:nth-child(odd)        { background: var(--white); }
+    .specs-row:nth-child(even)       { background: var(--gray-light); }
+    .specs-row--hi                   { background: var(--black) !important; color: var(--white); }
+    .specs-row--hi .specs-row__label { border-right-color: #383838; }
+
+    .specs-row__label {
+      flex: 0 0 240px;
+      padding: 9px 24px;
+      font-size: 12px;
+      font-weight: 400;
+      border-right: 1px solid #dedede;
+    }
+
+    .specs-row__val {
+      flex: 1;
+      padding: 9px 24px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .specs-section__image {
+      flex: 1;
+      overflow: hidden;
+      padding: 0 var(--pad) 0 48px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    #specsScrollSection .specs-section__image {
+      flex: 0 0 280px;
+      max-height: 320px;
+    }
+
+    #specsScrollSection .specs-scroll-img {
+      min-height: 320px;
+      margin-top: -40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Competitor Comparison ────────────────────────────────────────────── */
+    .specs-scroll-img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      max-height: none;
+    }
+
+    .specs-scroll-img__layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .specs-scroll-img__layer.is-active {
+      opacity: 1;
+    }
+
+    .compare-table {
+      display: table;
+      table-layout: auto;
+      border-collapse: collapse;
+      border: 1px solid var(--gray-bdr);
+    }
+
+    .compare-row {
+      display: table-row;
+    }
+
+    .compare-row:nth-child(odd)  { background: var(--white); }
+    .compare-row:nth-child(even) { background: var(--gray-light); }
+    .compare-row--hi             { background: var(--black) !important; color: var(--white); }
+    .compare-row--hi .compare-cell { border-right-color: #383838; }
+
+    .compare-cell {
+      display: table-cell;
+      padding: 9px 24px;
+      font-size: 12px;
+      font-weight: 400;
+      border-right: 1px solid #dedede;
+      border-bottom: 1px solid var(--gray-div);
+      white-space: nowrap;
+    }
+
+    .compare-cell:last-child { border-right: none; }
+    .compare-row:last-child .compare-cell { border-bottom: none; }
+    .compare-cell--val { font-weight: 700; }
+    .compare-cell--head {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .compare-cell--best { color: var(--accent); }
+
+    /* ── Durability Proof ─────────────────────────────────────────────────── */
+    .durability-section {
+      background: var(--white);
+      padding: 48px var(--pad);
+    }
+
+    .durability__stats {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 64px;
+      margin-top: 36px;
+      text-align: center;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .stat__value {
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+
+    .stat__label {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    /* ── Reviews ─────────────────────────────────────────────────────────── */
+    .reviews {
+      background: var(--white);
+      padding: 48px var(--pad);
+    }
+
+    .reviews .section-title { margin-bottom: 24px; }
+
+    .reviews__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .review-card {
+      border: 1px solid var(--gray-div);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .review-card__name {
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--black);
+      line-height: 1.1;
+    }
+
+    .review-card__bio {
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .review-card__meta {
+      font-size: 10px;
+      font-weight: 400;
+    }
+
+    .review-card__stars {
+      color: var(--accent);
+      font-size: 22px;
+    }
+
+    .review-card__divider {
+      height: 1px;
+      background: #e6e6e6;
+      margin: 5px 0;
+    }
+
+    .review-card__text {
+      font-size: 13px;
+      font-weight: 400;
+      color: #1f1f1f;
+      line-height: 1.65;
+    }
+
+    /* ── Bundles ─────────────────────────────────────────────────────────── */
+    .bundles {
+      background: var(--black);
+      color: var(--white);
+      padding: 48px var(--pad);
+    }
+
+    .bundles .section-title { color: var(--white); margin-bottom: 8px; }
+
+    .bundles__sub {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+
+    .bundles__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .bundle-card {
+      background: var(--white);
+      color: var(--black);
+      padding: 28px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .bundle-card__name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .bundle-card__desc {
+      font-size: 12px;
+      font-weight: 400;
+      color: #555;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .bundle-card__price {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .bundle-card__cta {
+      display: block;
+      background: var(--accent);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 14px;
+      text-align: center;
+      text-decoration: none;
+      margin-top: auto;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .bundle-card__cta:hover  { background: #fff; color: #9a0f2e; box-shadow: inset 0 0 0 2px #9a0f2e; }
+    .bundle-card__cta:active { background: #f5f5f5; color: #9a0f2e; box-shadow: inset 0 0 0 2px #9a0f2e; }
+
+    /* ── Footer ───────────────────────────────────────────────────────────── */
+    .footer {
+      background: var(--black);
+      color: var(--white);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--pad);
+    }
+
+    .footer__left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .footer__brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .footer__links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer__links a {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      position: relative;
+    }
+
+    .footer__links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 1px;
+      background: var(--white);
+      transform: translateY(4px);
+      opacity: 0;
+      transition: transform 0.22s ease, opacity 0.18s ease;
+    }
+
+    .footer__links a:hover::after {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .footer__copy {
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    /* ── Responsive ───────────────────────────────────────────────────────── */
+    @media (max-width: 1200px) {
+      .specs-scroll-img { min-height: 440px; }
+    }
+
+    @media (max-width: 900px) {
+      :root { --pad: 40px; }
+
+      .specs-section { flex-direction: column; padding: 40px 20px; }
+      .specs-scroll-img { min-height: 440px; }
+      .specs-section__left { flex: none; width: 100%; }
+      .specs-section__image { padding: 32px 0 0; }
+      .specs-row__label { flex: 0 0 130px; }
+
+      .bundles__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      :root { --pad: 20px; }
+
+      /* Promo */
+      .promo { height: auto; padding: 8px 20px; font-size: 10px; text-align: center; line-height: 1.4; }
+
+      /* Nav */
+      .nav { padding: 0 20px; }
+      .nav__links { display: none; }
+      .nav__action-label { display: none; }
+      .nav__hamburger { display: flex; }
+
+      /* Hero */
+      .hero { flex-direction: column; min-height: auto; }
+      .hero__image { flex: none; height: 300px; }
+      .hero__image img { width: 100%; height: 100%; top: 0; left: 0; }
+      .hero__info { flex: none; padding: 32px 20px; }
+      .hero__purchase { width: 100%; }
+      .hero__cta { white-space: normal; text-align: center; }
+      .bundle-btn { width: 100%; }
+
+      /* Calc section */
+      .calc-section { flex-direction: column; }
+      .calc-section__image { flex: none; height: 240px; }
+      .calc-section__image img { position: absolute; width: 100%; height: 100%; }
+      .calc-section__content { flex: none; padding: 40px 20px; }
+      .calc-widget { grid-template-columns: 1fr; gap: 24px 0; }
+      .calc-arrow { display: none; }
+
+      .compare-table { width: 100%; }
+
+      /* Durability */
+      .durability-section { padding: 40px 20px; }
+      .durability__stats { flex-wrap: wrap; gap: 32px; justify-content: flex-start; }
+      .stat { flex: 0 0 calc(50% - 16px); align-items: flex-start; text-align: left; }
+
+      /* Reviews */
+      .reviews { padding: 40px 20px; }
+      .reviews__grid { grid-template-columns: 1fr; }
+
+      /* Bundles */
+      .bundles { padding: 40px 20px; }
+      .bundles__grid { grid-template-columns: 1fr; }
+
+      /* Footer */
+      .footer { height: auto; flex-direction: column; align-items: flex-start; gap: 10px; padding: 20px; }
+      .footer__left { flex-direction: column; gap: 8px; align-items: flex-start; }
+      .footer__links { display: none; }
+    }
+
+    @media (max-width: 400px) {
+      .hero__image { height: 240px; }
+      .hero__title { font-size: 24px; }
+      .stat { flex: 0 0 100%; }
+    }
+
+    /* ── Scroll entrance animations ──────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .reveal-left.is-visible { opacity: 1; transform: translateX(0); }
+
+    .stagger-children > * {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .stagger-children.is-visible > *:nth-child(1)  { opacity: 1; transform: none; transition-delay: 0s; }
+    .stagger-children.is-visible > *:nth-child(2)  { opacity: 1; transform: none; transition-delay: 0.08s; }
+    .stagger-children.is-visible > *:nth-child(3)  { opacity: 1; transform: none; transition-delay: 0.16s; }
+    .stagger-children.is-visible > *:nth-child(4)  { opacity: 1; transform: none; transition-delay: 0.24s; }
+    .stagger-children.is-visible > *:nth-child(5)  { opacity: 1; transform: none; transition-delay: 0.32s; }
+    .stagger-children.is-visible > *:nth-child(6)  { opacity: 1; transform: none; transition-delay: 0.40s; }
+    .stagger-children.is-visible > *:nth-child(7)  { opacity: 1; transform: none; transition-delay: 0.48s; }
+    .stagger-children.is-visible > *:nth-child(8)  { opacity: 1; transform: none; transition-delay: 0.56s; }
+    .stagger-children.is-visible > *:nth-child(9)  { opacity: 1; transform: none; transition-delay: 0.64s; }
+    .stagger-children.is-visible > *:nth-child(10) { opacity: 1; transform: none; transition-delay: 0.72s; }
+
+    .reveal-title {
+      opacity: 0;
+      letter-spacing: -0.06em;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease, letter-spacing 0.5s ease;
+    }
+    .reveal-title.is-visible { opacity: 1; letter-spacing: inherit; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- Promo Ribbon -->
+  <div class="promo">
+    FREE SHIPPING ON ORDERS $150+&nbsp;&nbsp;·&nbsp;&nbsp;KOVA NIMBVX PRO — DAILY TRAINER, RACE-DAY READY
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="nav__brand">KOVA</a>
+    <ul class="nav__links">
+      <li><a href="#" class="active">Products</a></li>
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Athletes</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="nav__actions">
+      <a href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="5.5" cy="5.5" r="4"/>
+          <line x1="8.5" y1="8.5" x2="13" y2="13"/>
+        </svg>
+        <span class="nav__action-label">Search</span>
+      </a>
+      <a href="#">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 1h2.2l2.3 7.5h6.5l1.8-5H4.8"/>
+          <circle cx="6.5" cy="13" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="11" cy="13" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        <span class="nav__action-label">Cart</span>
+      </a>
+    </div>
+    <button class="nav__hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </nav>
+  <div class="nav__mobile-menu" id="mobileMenu">
+    <button class="nav__close" onclick="toggleMenu()" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="4" y1="4" x2="20" y2="20"/>
+        <line x1="20" y1="4" x2="4" y2="20"/>
+      </svg>
+    </button>
+    <ul>
+      <li><a href="#" class="active">Products</a></li>
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Athletes</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__image">
+      <img src="img-price-hero.png" alt="KOVA NIMBVX PRO">
+    </div>
+    <div class="hero__info">
+      <div class="hero__inner">
+        <h1 class="hero__title">KOVA NIMBVX PRO</h1>
+        <p class="hero__subtitle">Carbon-plated daily trainer &nbsp;·&nbsp; 700km lifespan</p>
+        <p class="hero__price">$229 USD</p>
+        <div class="hero__cost-callout">
+          <span class="callout-val">= $0.33 / km</span>
+          <span class="callout-note">Based on rated 700km lifespan</span>
+        </div>
+        <div class="hero__rating">
+          <span class="stars">★★★★★</span>
+          <span class="gap">&nbsp;&nbsp;</span>
+          <span class="score">4.7/5</span>
+          <span class="count">&nbsp;&nbsp;·&nbsp;&nbsp;2,340 verified reviews</span>
+        </div>
+        <div class="hero__purchase">
+          <div class="bundle-select">
+            <p class="bundle-select__label">Select a bundle</p>
+            <button class="bundle-btn" onclick="selectBundle(this)">
+              <span class="bundle-btn__name">Base &nbsp;&nbsp;$229</span>
+            </button>
+            <button class="bundle-btn" onclick="selectBundle(this)">
+              <span class="bundle-btn__name">Training Pack &nbsp;&nbsp;$259</span>
+              <span class="bundle-btn__save">save $20</span>
+            </button>
+            <button class="bundle-btn" onclick="selectBundle(this)">
+              <span class="bundle-btn__name">Race Ready &nbsp;&nbsp;$289</span>
+              <span class="bundle-btn__save">save $50</span>
+            </button>
+          </div>
+          <a href="#" class="hero__cta">VIEW BUNDLES &amp; SAVE</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cost-Per-Km Calculator -->
+  <section class="calc-section reveal">
+    <div class="calc-section__image">
+      <img src="img-runner-action.png" alt="KOVA NIMBVX PRO in action">
+    </div>
+    <div class="calc-section__content">
+      <h2 class="section-title">Cost Per Kilometre</h2>
+      <div class="calc-widget">
+        <div class="calc-col">
+          <span class="calc-col__label">Your weekly mileage</span>
+          <span class="calc-col__value" id="km-val">50 km</span>
+          <input class="calc-range" type="range" min="10" max="150" value="50"
+                 oninput="updateCalc(this.value)" step="5">
+          <span class="calc-col__sub">per week</span>
+        </div>
+        <span class="calc-arrow">→</span>
+        <div class="calc-col">
+          <span class="calc-col__label">Shoe lasts</span>
+          <span class="calc-col__value" id="weeks-val">14 wks</span>
+          <span class="calc-col__sub" id="weeks-sub">~3.2 months at your pace</span>
+        </div>
+        <span class="calc-arrow">→</span>
+        <div class="calc-col">
+          <span class="calc-col__label">Your cost per km</span>
+          <span class="calc-col__value accent">$0.33</span>
+          <span class="calc-col__sub">regardless of mileage</span>
+        </div>
+      </div>
+      <div class="calc-compare">
+        The average race-only carbon shoe ($180 / ~300km) costs <strong>$0.60/km</strong> — nearly <strong>2× more per km</strong> than the NIMBVX PRO.
+      </div>
+    </div>
+  </section>
+
+  <!-- NIMBVX PRO vs. The Competition -->
+  <section class="specs-section" id="specsScrollSection">
+    <div class="specs-section__left reveal">
+      <h2 class="section-title reveal-title">NIMBVX PRO vs. The Competition</h2>
+      <div class="compare-table">
+        <div class="compare-row compare-row--hi">
+          <div class="compare-cell compare-cell--shoe compare-cell--head">Shoe</div>
+          <div class="compare-cell compare-cell--val compare-cell--head">Price</div>
+          <div class="compare-cell compare-cell--val compare-cell--head">Lifespan</div>
+          <div class="compare-cell compare-cell--val compare-cell--head">Cost / km</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell compare-cell--shoe">KOVA NIMBVX PRO</div>
+          <div class="compare-cell compare-cell--val">$229</div>
+          <div class="compare-cell compare-cell--val">~700km</div>
+          <div class="compare-cell compare-cell--val compare-cell--best">$0.33</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell compare-cell--shoe">Saucony Endorphin Pro 3</div>
+          <div class="compare-cell compare-cell--val">$225</div>
+          <div class="compare-cell compare-cell--val">~400km</div>
+          <div class="compare-cell compare-cell--val">$0.56</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell compare-cell--shoe">Adidas Adizero Adios Pro 3</div>
+          <div class="compare-cell compare-cell--val">$250</div>
+          <div class="compare-cell compare-cell--val">~350km</div>
+          <div class="compare-cell compare-cell--val">$0.71</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell compare-cell--shoe">Nike Vaporfly 3</div>
+          <div class="compare-cell compare-cell--val">$260</div>
+          <div class="compare-cell compare-cell--val">~300km</div>
+          <div class="compare-cell compare-cell--val">$0.87</div>
+        </div>
+      </div>
+    </div>
+    <div class="specs-section__image specs-scroll-img" id="specsScrollImg">
+      <img src="img-nimbvx-lateral.png" class="specs-scroll-img__layer is-active" alt="KOVA NIMBVX PRO view 1">
+      <img src="img-nimbvx-top.png" class="specs-scroll-img__layer" alt="KOVA NIMBVX PRO view 2">
+      <img src="img-nimbvx-detail.png" class="specs-scroll-img__layer" alt="KOVA NIMBVX PRO view 3">
+    </div>
+  </section>
+
+  <!-- Durability Proof -->
+  <section class="durability-section">
+    <h2 class="section-title reveal-title">Built to Last</h2>
+    <div class="durability__stats stagger-children">
+      <div class="stat">
+        <p class="stat__value">~700km</p>
+        <p class="stat__label">Rated lifespan</p>
+      </div>
+      <div class="stat">
+        <p class="stat__value">REACTFOAM+</p>
+        <p class="stat__label">Dual-density midsole</p>
+      </div>
+      <div class="stat">
+        <p class="stat__value">Zoned Outsole</p>
+        <p class="stat__label">Heel + forefoot rubber patches</p>
+      </div>
+      <div class="stat">
+        <p class="stat__value">Back-to-back</p>
+        <p class="stat__label">Reduced fatigue on training days</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="reviews">
+    <h2 class="section-title reveal-title">From Runners Who've Put in the Miles</h2>
+    <div class="reviews__grid stagger-children">
+      <div class="review-card">
+        <p class="review-card__name">Tom R.</p>
+        <p class="review-card__bio">Budget-conscious runner · 580km/year</p>
+        <p class="review-card__meta">Verified Purchase · 620km logged</p>
+        <div class="review-card__stars">★★★★★</div>
+        <div class="review-card__divider"></div>
+        <p class="review-card__text">"Still going strong at 800km. No breakdown. Zero regrets. Best value in my rotation."</p>
+      </div>
+      <div class="review-card">
+        <p class="review-card__name">Yuki S.</p>
+        <p class="review-card__bio">r/running regular · runs 4×/week</p>
+        <p class="review-card__meta">Verified Purchase · 510km logged</p>
+        <div class="review-card__stars">★★★★★</div>
+        <div class="review-card__divider"></div>
+        <p class="review-card__text">"At $229 for 700km that's $0.33/km. Nothing else in this price range comes close."</p>
+      </div>
+      <div class="review-card">
+        <p class="review-card__name">Dana C.</p>
+        <p class="review-card__bio">Semi-structured runner · 720km/year</p>
+        <p class="review-card__meta">Verified Purchase · 430km logged</p>
+        <div class="review-card__stars">★★★★★</div>
+        <div class="review-card__divider"></div>
+        <p class="review-card__text">"Got the Training Pack. Saved $20 — the socks have held up just as well."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bundles -->
+  <section class="bundles">
+    <h2 class="section-title reveal-title">Build Your Pack</h2>
+    <p class="bundles__sub reveal">Everything you need. Nothing you don't.</p>
+    <div class="bundles__grid stagger-children">
+      <div class="bundle-card">
+        <p class="bundle-card__name">Shoe Only</p>
+        <p class="bundle-card__desc">NIMBVX PRO — the daily trainer, race-day ready.</p>
+        <p class="bundle-card__price">$229</p>
+        <a href="#" class="bundle-card__cta">Add to Cart</a>
+      </div>
+      <div class="bundle-card">
+        <p class="bundle-card__name">Training Pack</p>
+        <p class="bundle-card__desc">Shoe + no-show socks (×2) + mesh laundry bag.</p>
+        <p class="bundle-card__price">$259</p>
+        <a href="#" class="bundle-card__cta">Add to Cart</a>
+      </div>
+      <div class="bundle-card">
+        <p class="bundle-card__name">Race Ready</p>
+        <p class="bundle-card__desc">Shoe + race laces + foam roller + digital training plan.</p>
+        <p class="bundle-card__price">$289</p>
+        <a href="#" class="bundle-card__cta">Add to Cart</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__left">
+      <span class="footer__brand">KOVA</span>
+      <nav class="footer__links">
+        <a href="#">Products</a>
+        <a href="#">Technology</a>
+        <a href="#">Athletes</a>
+        <a href="#">About</a>
+        <a href="#">Returns</a>
+        <a href="#">Privacy</a>
+      </nav>
+    </div>
+    <span class="footer__copy">© 2026 KOVA. Run with reason.</span>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const btn = document.getElementById('hamburger');
+      const menu = document.getElementById('mobileMenu');
+      const open = btn.classList.toggle('is-open');
+      menu.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open);
+    }
+
+    function selectBundle(el) {
+      document.querySelectorAll('.bundle-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function updateCalc(val) {
+      const km = parseInt(val);
+      const weeks = Math.round(700 / km);
+      const months = (700 / km / 4.33).toFixed(1);
+      document.getElementById('km-val').textContent = km + ' km';
+      document.getElementById('weeks-val').textContent = weeks + ' wks';
+      document.getElementById('weeks-sub').textContent = '~' + months + ' months at your pace';
+    }
+
+    function initScrollSpecs(sectionId, imgId) {
+      const section = document.getElementById(sectionId);
+      const layers  = document.querySelectorAll('#' + imgId + ' .specs-scroll-img__layer');
+      let current = 0;
+
+      function setLayer(index) {
+        if (index === current) return;
+        layers[current].classList.remove('is-active');
+        layers[index].classList.add('is-active');
+        current = index;
+      }
+
+      window.addEventListener('scroll', function () {
+        const rect = section.getBoundingClientRect();
+        const vh   = window.innerHeight;
+        const progress = (vh - rect.top) / (vh + rect.height);
+        if      (progress < 0.44) setLayer(0);
+        else if (progress < 0.66) setLayer(1);
+        else                      setLayer(2);
+      }, { passive: true });
+    }
+
+    initScrollSpecs('specsScrollSection', 'specsScrollImg');
+
+    // Scroll entrance animations
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-title, .stagger-children').forEach(el => {
+      revealObserver.observe(el);
+    });
+  </script>
+
+</body>
+</html>

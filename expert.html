@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOVA NIMBVX PRO — The Expert</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:      #000000;
+      --white:      #ffffff;
+      --accent:     #b21235;
+      --gray-hero:  #dbdbdb;
+      --gray-light: #f5f5f5;
+      --gray-div:   #e0e0e0;
+      --gray-mid:   #808080;
+      --gray-bdr:   #b3b3b3;
+      --footer-bg:  #141414;
+      --gold:       #f9a200;
+      --pad:        96px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--black);
+      background: var(--white);
+    }
+
+    /* ── Promo Ribbon ─────────────────────────────────────────────────────── */
+    .promo {
+      position: relative;
+      z-index: 400;
+      background: var(--accent);
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.03em;
+      overflow: hidden;
+    }
+
+    /* ── Navigation ───────────────────────────────────────────────────────── */
+    .nav {
+      background: var(--black);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--pad);
+      position: relative;
+    }
+
+    /* ── Hamburger ────────────────────────────────────────────────────────── */
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 16px;
+      flex-shrink: 0;
+    }
+
+    .nav__hamburger .bar {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--white);
+      transition: transform 0.22s ease, opacity 0.22s ease;
+      transform-origin: center;
+    }
+
+    /* ── Mobile Menu ──────────────────────────────────────────────────────── */
+    .nav__mobile-menu {
+      position: fixed;
+      top: 44px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #000;
+      z-index: 300;
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s ease, opacity 0.25s ease;
+    }
+
+    .nav__mobile-menu.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav__close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      color: var(--white);
+    }
+
+    .nav__close svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--white);
+      stroke-width: 2;
+    }
+
+    .nav__mobile-menu ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 20px 32px;
+      gap: 20px;
+    }
+
+    .nav__mobile-menu a {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .nav__mobile-menu li { margin-top: 5px; }
+    .nav__mobile-menu a.active { text-decoration: underline; }
+
+    .nav__brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 24px;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav__links {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav__links a {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      position: relative;
+    }
+
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 1px;
+      background: var(--white);
+      transform: translateY(4px);
+      opacity: 0;
+      transition: transform 0.22s ease, opacity 0.18s ease;
+    }
+
+    .nav__links a:not(.active):hover::after {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @keyframes nav-underline-in {
+      from { transform: translateY(4px); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+
+    .nav__links a.active { text-decoration: none; }
+    .nav__links a.active::after {
+      transform: translateY(0);
+      opacity: 1;
+      animation: nav-underline-in 0.4s ease forwards;
+    }
+
+    .nav__actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav__actions a {
+      font-size: 13px;
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .nav__actions a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 1px;
+      background: var(--white);
+      transform: translateY(4px);
+      opacity: 0;
+      transition: transform 0.22s ease, opacity 0.18s ease;
+    }
+
+    .nav__actions a:hover::after {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ── Hero ─────────────────────────────────────────────────────────────── */
+    .hero {
+      display: flex;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    .hero__image {
+      flex: 0 0 50%;
+      background: var(--gray-hero);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero__image img {
+      position: absolute;
+      width: 145%;
+      height: 145%;
+      object-fit: cover;
+      object-position: center;
+      top: -22%;
+      left: -20%;
+    }
+
+    /* ── Hero Carousel ────────────────────────────────────────────────────── */
+    .hero__carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero__carousel__slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+
+    .hero__carousel__slide.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .hero__carousel__slide img {
+      position: absolute;
+      width: 145%;
+      height: 145%;
+      object-fit: cover;
+      object-position: center;
+      top: -22%;
+      left: -20%;
+    }
+
+    .hero__carousel__dots {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .hero__carousel__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .hero__carousel__dot.is-active {
+      background: #fff;
+      transform: scale(1.3);
+    }
+
+    .hero__carousel__btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.3);
+      border: none;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background 0.2s ease;
+    }
+
+    .hero__carousel__btn:hover { background: rgba(0,0,0,0.6); }
+    .hero__carousel__btn--prev { left: 12px; }
+    .hero__carousel__btn--next { right: 12px; }
+
+    .hero__carousel__btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: #fff;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .hero__info {
+      flex: 0 0 50%;
+      background: var(--white);
+      padding: 48px var(--pad);
+      display: flex;
+      align-items: center;
+    }
+
+    .hero__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    .hero__title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 30px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .hero__subtitle {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-top: 12px;
+    }
+
+    .hero__price {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 26px;
+      margin-top: 10px;
+    }
+
+    .hero__rating {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
+      margin-top: 10px;
+      font-size: 0;
+    }
+
+    .hero__rating .stars { color: var(--gold); font-size: 32px; width: 100%; line-height: 1.1; margin-bottom: 8px; }
+    .hero__rating .gap   { display: none; }
+    .hero__rating .score { font-size: 14px; font-weight: 700; color: var(--black); }
+    .hero__rating .count { font-size: 14px; color: var(--black); }
+
+    /* Specs list */
+    .hero__specs {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 20px;
+    }
+
+    .spec-row {
+      display: flex;
+      gap: 8px;
+      font-size: 14px;
+      line-height: 1.45;
+      flex-wrap: wrap;
+    }
+
+    .spec-row__label { font-weight: 300; }
+    .spec-row__val   { font-weight: 700; }
+
+    /* Size selector */
+    .size-select {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .size-select__label {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .size-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .size-btn {
+      width: 40px;
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--gray-bdr);
+      background: var(--white);
+      font-size: 13px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    .size-btn:hover { border-color: var(--black); }
+
+    /* Purchase group — size selector + CTA aligned */
+    .hero__purchase {
+      display: flex;
+      flex-direction: column;
+      width: fit-content;
+      margin-top: 24px;
+    }
+
+    .hero__purchase .size-select { margin-top: 0; }
+
+    /* CTA */
+    .hero__cta {
+      display: block;
+      width: 100%;
+      background: var(--accent);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1;
+      padding: 18px 28px;
+      margin-top: 12px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      text-align: center;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .hero__cta:hover  { background: #fff; color: #9a0f2e; box-shadow: inset 0 0 0 2px #9a0f2e; }
+    .hero__cta:active { background: #f5f5f5; color: #9a0f2e; box-shadow: inset 0 0 0 2px #9a0f2e; }
+
+    /* ── Section title shared ─────────────────────────────────────────────── */
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+    /* ── Full Specs Table ─────────────────────────────────────────────────── */
+    .specs-section {
+      background: var(--white);
+      display: flex;
+      align-items: flex-start;
+      padding: 48px 0 48px var(--pad);
+    }
+
+    .specs-section__left {
+      flex: 0 0 54%;
+    }
+
+    .specs-section__left .section-title { margin-bottom: 24px; }
+
+    .specs-table {
+      border: 1px solid var(--gray-bdr);
+      max-width: 677px;
+    }
+
+    .specs-row {
+      display: flex;
+      border-bottom: 1px solid var(--gray-div);
+    }
+
+    .specs-row:last-child { border-bottom: none; }
+    .specs-row:nth-child(odd)          { background: var(--white); }
+    .specs-row:nth-child(even)         { background: var(--gray-light); }
+    .specs-row--hi                     { background: var(--black) !important; color: var(--white); }
+    .specs-row--hi .specs-row__label   { border-right-color: #383838; }
+
+    .specs-row__label {
+      flex: 0 0 240px;
+      padding: 9px 24px;
+      font-size: 12px;
+      font-weight: 400;
+      border-right: 1px solid #dedede;
+    }
+
+    .specs-row__val {
+      flex: 1;
+      padding: 9px 24px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .specs-section__image {
+      flex: 1;
+      overflow: hidden;
+      padding: 0 var(--pad) 0 48px;
+      display: flex;
+      align-items: center;
+      max-height: 300px;
+    }
+
+    .specs-section__image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .specs-section--title-top {
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .specs-section--title-top .section-title {
+      margin-bottom: 0;
+    }
+
+    .specs-section--title-top .specs-section__row {
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+      width: 100%;
+    }
+
+    .specs-section--title-top .specs-table {
+      width: 100%;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .specs-section--title-top .specs-section__image {
+      padding: 0;
+      flex: 1;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+    }
+
+    .specs-scroll-img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      max-height: none;
+    }
+
+    .specs-scroll-img__layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .specs-scroll-img__layer.is-active {
+      opacity: 1;
+    }
+
+    /* ── Technical Breakdown ──────────────────────────────────────────────── */
+    .tech {
+      background: var(--black);
+      color: var(--white);
+      padding: 48px var(--pad);
+    }
+
+    .tech .section-title { color: var(--white); margin-bottom: 42px; }
+
+    .tech__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .diagram { display: flex; flex-direction: column; }
+
+    .diagram__img {
+      background: var(--gray-hero);
+      aspect-ratio: 432 / 324;
+      overflow: hidden;
+    }
+
+    .diagram__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .diagram__body {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-top: 20px;
+    }
+
+    .diagram__label {
+      font-weight: 700;
+      font-size: 20px;
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    .diagram__desc {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.5;
+    }
+
+    /* ── Made for Performance ─────────────────────────────────────────────── */
+    .performance {
+      background: var(--white);
+      padding: 48px var(--pad);
+    }
+
+    .performance .section-title { margin-bottom: 0; }
+
+    .performance__stats {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 64px;
+      margin-top: 36px;
+      text-align: center;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .stat__value {
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+
+    .stat__label {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    /* ── Reviews ──────────────────────────────────────────────────────────── */
+    .reviews {
+      background: var(--white);
+      padding: 48px var(--pad);
+    }
+
+    .reviews .section-title { margin-bottom: 24px; }
+
+    .reviews__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .review-card {
+      border: 1px solid var(--gray-div);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .review-card__name {
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--black);
+      line-height: 1.1;
+    }
+
+    .review-card__bio {
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .review-card__meta {
+      font-size: 10px;
+      font-weight: 400;
+    }
+
+    .review-card__stars {
+      color: var(--accent);
+      font-size: 22px;
+    }
+
+    .review-card__divider {
+      height: 1px;
+      background: #e6e6e6;
+      margin: 5px 0;
+    }
+
+    .review-card__text {
+      font-size: 13px;
+      font-weight: 400;
+      color: #1f1f1f;
+      line-height: 1.65;
+    }
+
+    /* ── Bundle CTA ───────────────────────────────────────────────────────── */
+    .bundle-cta-section {
+      background: var(--black);
+      color: var(--white);
+      padding: 49px var(--pad) 40px;
+    }
+
+    .bundle-cta-section .section-title { color: var(--white); }
+
+    .bundle-cta__actions {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-top: 24px;
+    }
+
+    .cta-primary {
+      background: var(--accent);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1;
+      padding: 18px 28px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .cta-primary:hover  { background: #fff; color: #9a0f2e; box-shadow: inset 0 0 0 2px #9a0f2e; }
+    .cta-primary:active { background: #f5f5f5; color: #9a0f2e; box-shadow: inset 0 0 0 2px #9a0f2e; }
+
+    .cta-secondary {
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 17px 28px;
+      border: 1px solid rgba(255,255,255,0.35);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .cta-secondary:hover { border-color: var(--white); }
+
+    /* ── Footer ───────────────────────────────────────────────────────────── */
+    .footer {
+      background: var(--black);
+      color: var(--white);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--pad);
+    }
+
+    .footer__left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .footer__brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .footer__links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer__links a {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      position: relative;
+    }
+
+    .footer__links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 1px;
+      background: var(--white);
+      transform: translateY(4px);
+      opacity: 0;
+      transition: transform 0.22s ease, opacity 0.18s ease;
+    }
+
+    .footer__links a:hover::after {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .footer__copy {
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    /* ── Responsive ───────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      :root { --pad: 40px; }
+
+      .tech__grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      :root { --pad: 20px; }
+
+      /* Promo */
+      .promo { font-size: 10px; height: auto; padding: 8px 20px; text-align: center; line-height: 1.4; }
+
+      /* Nav */
+      .nav { padding: 0 20px; }
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+      .nav__action-label { display: none; }
+
+      /* Hero */
+      .hero { flex-direction: column; min-height: auto; }
+      .hero__image { flex: none; height: 300px; }
+      .hero__image img { position: absolute; width: 100%; height: 100%; top: 0; left: 0; object-fit: cover; object-position: center; }
+      .hero__info { flex: none; padding: 32px 20px; }
+
+      /* Specs list in hero */
+      .spec-row { font-size: 13px; }
+
+      /* Size buttons */
+      .size-btn { width: 44px; padding: 10px 0; }
+
+      /* CTA */
+      .hero__purchase { min-width: 260px; }
+      .hero__cta { width: 100%; text-align: center; }
+
+      /* Specs section */
+      .specs-section { flex-direction: column; padding: 40px 20px; }
+      .specs-scroll-img { min-height: 440px; }
+      .specs-section__left { flex: none; width: 100%; }
+      .specs-section__image { padding: 32px 0 0; max-height: 220px; }
+      .specs-section--title-top .specs-section__row { flex-direction: column; }
+      .specs-row__label { flex: 0 0 130px; }
+
+      /* Tech */
+      .tech { padding: 40px 20px; }
+      .tech__grid { grid-template-columns: 1fr; }
+
+      /* Performance */
+      .performance { padding: 40px 20px; }
+      .performance__stats { flex-wrap: wrap; gap: 32px; justify-content: flex-start; }
+      .stat { flex: 0 0 calc(50% - 16px); align-items: flex-start; text-align: left; }
+
+      /* Reviews */
+      .reviews { padding: 40px 20px; }
+      .reviews__grid { grid-template-columns: 1fr; }
+
+      /* Bundle CTA */
+      .bundle-cta-section { padding: 40px 20px; }
+      .bundle-cta__actions { flex-direction: column; }
+      .cta-primary, .cta-secondary { text-align: center; width: 100%; }
+
+      /* Footer */
+      .footer { height: auto; flex-direction: column; align-items: flex-start; gap: 10px; padding: 20px; }
+      .footer__left { flex-direction: column; gap: 8px; align-items: flex-start; }
+      .footer__links { display: none; }
+    }
+
+    @media (max-width: 400px) {
+      .hero__image { height: 240px; }
+      .hero__title { font-size: 24px; }
+      .stat { flex: 0 0 100%; }
+    }
+
+    /* ── Scroll entrance animations ──────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .reveal-left.is-visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .stagger-children > * {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .stagger-children.is-visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0s; }
+    .stagger-children.is-visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.08s; }
+    .stagger-children.is-visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.16s; }
+    .stagger-children.is-visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.24s; }
+    .stagger-children.is-visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.32s; }
+    .stagger-children.is-visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.40s; }
+    .stagger-children.is-visible > *:nth-child(7) { opacity: 1; transform: none; transition-delay: 0.48s; }
+    .stagger-children.is-visible > *:nth-child(8) { opacity: 1; transform: none; transition-delay: 0.56s; }
+    .stagger-children.is-visible > *:nth-child(9) { opacity: 1; transform: none; transition-delay: 0.64s; }
+    .stagger-children.is-visible > *:nth-child(10) { opacity: 1; transform: none; transition-delay: 0.72s; }
+
+    .reveal-title {
+      opacity: 0;
+      letter-spacing: -0.06em;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease, letter-spacing 0.5s ease;
+    }
+    .reveal-title.is-visible {
+      opacity: 1;
+      letter-spacing: inherit;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Promo Ribbon -->
+  <div class="promo">
+    FREE SHIPPING ON ORDERS $150+&nbsp;&nbsp;·&nbsp;&nbsp;KOVA NIMBVX PRO — DAILY TRAINER, RACE-DAY READY
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="nav__brand">KOVA</a>
+    <ul class="nav__links">
+      <li><a href="#" class="active">Products</a></li>
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Athletes</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="nav__actions">
+      <a href="#">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="5.5" cy="5.5" r="4"/>
+          <line x1="8.5" y1="8.5" x2="13" y2="13"/>
+        </svg>
+        <span class="nav__action-label">Search</span>
+      </a>
+      <a href="#">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 1h2.2l2.3 7.5h6.5l1.8-5H4.8"/>
+          <circle cx="6.5" cy="13" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="11" cy="13" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        <span class="nav__action-label">Cart</span>
+      </a>
+    </div>
+    <button class="nav__hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </nav>
+  <div class="nav__mobile-menu" id="mobileMenu">
+    <button class="nav__close" onclick="toggleMenu()" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="4" y1="4" x2="20" y2="20"/>
+        <line x1="20" y1="4" x2="4" y2="20"/>
+      </svg>
+    </button>
+    <ul>
+      <li><a href="#" class="active">Products</a></li>
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Athletes</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__image">
+      <div class="hero__carousel" id="heroCarousel">
+        <div class="hero__carousel__slide is-active">
+          <img src="img-expert-hero.png" alt="KOVA NIMBVX PRO">
+        </div>
+        <div class="hero__carousel__slide">
+          <img src="img-nimbvx-on-foot.png" alt="KOVA NIMBVX PRO — detail">
+        </div>
+        <div class="hero__carousel__slide">
+          <img src="img-runner-action.png" alt="KOVA NIMBVX PRO — on foot">
+        </div>
+        <button class="hero__carousel__btn hero__carousel__btn--prev" onclick="heroCarouselMove(-1)" aria-label="Previous image">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="hero__carousel__btn hero__carousel__btn--next" onclick="heroCarouselMove(1)" aria-label="Next image">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="hero__carousel__dots">
+          <button class="hero__carousel__dot is-active" onclick="heroCarouselGo(0)" aria-label="Slide 1"></button>
+          <button class="hero__carousel__dot" onclick="heroCarouselGo(1)" aria-label="Slide 2"></button>
+          <button class="hero__carousel__dot" onclick="heroCarouselGo(2)" aria-label="Slide 3"></button>
+        </div>
+      </div>
+    </div>
+    <div class="hero__info">
+      <div class="hero__inner">
+        <h1 class="hero__title">KOVA NIMBVX PRO</h1>
+        <p class="hero__subtitle">Science-grade Carbon-plated daily trainer</p>
+        <p class="hero__price">$229 USD</p>
+        <div class="hero__rating">
+          <span class="stars">★★★★★</span>
+          <span class="gap">&nbsp;&nbsp;</span>
+          <span class="score">4.7/5</span>
+          <span class="count">&nbsp;&nbsp;·&nbsp;&nbsp;2,340 verified reviews</span>
+        </div>
+        <div class="hero__specs">
+          <div class="spec-row">
+            <span class="spec-row__label">Stack height:</span>
+            <span class="spec-row__val">38mm heel / 30mm forefoot</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-row__label">Weight:</span>
+            <span class="spec-row__val">218g (Men's US 9)</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-row__label">Plate:</span>
+            <span class="spec-row__val">Full-length unidirectional carbon fiber</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-row__label">Midsole:</span>
+            <span class="spec-row__val">Dual-density REACTFOAM+</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-row__label">Rated lifespan:</span>
+            <span class="spec-row__val">~700km</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-row__label">Use:</span>
+            <span class="spec-row__val">Daily training, tempo, half marathon, marathon</span>
+          </div>
+        </div>
+        <div class="hero__purchase">
+          <div class="size-select" id="size-select">
+            <p class="size-select__label">Select a size</p>
+            <div class="size-row">
+              <button class="size-btn">6</button>
+              <button class="size-btn">6.5</button>
+              <button class="size-btn">7</button>
+              <button class="size-btn">7.5</button>
+              <button class="size-btn">8</button>
+            </div>
+            <div class="size-row">
+              <button class="size-btn">8.5</button>
+              <button class="size-btn">9</button>
+              <button class="size-btn">9.5</button>
+              <button class="size-btn">10</button>
+              <button class="size-btn">10.5</button>
+            </div>
+          </div>
+          <a href="#" class="hero__cta">ADD TO CART — $229</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full Technical Specifications -->
+  <section class="specs-section" id="specsScrollSection">
+    <div class="specs-section__left reveal">
+      <h2 class="section-title reveal-title">Full Technical Specifications</h2>
+      <div class="specs-table stagger-children">
+        <div class="specs-row">
+          <div class="specs-row__label">Stack height</div>
+          <div class="specs-row__val">38mm heel / 30mm forefoot</div>
+        </div>
+        <div class="specs-row">
+          <div class="specs-row__label">Heel-to-toe drop</div>
+          <div class="specs-row__val">8mm</div>
+        </div>
+        <div class="specs-row">
+          <div class="specs-row__label">Weight</div>
+          <div class="specs-row__val">218g (Men's US 9)</div>
+        </div>
+        <div class="specs-row specs-row--hi">
+          <div class="specs-row__label">Plate</div>
+          <div class="specs-row__val">Full-length unidirectional carbon fiber</div>
+        </div>
+        <div class="specs-row specs-row--hi">
+          <div class="specs-row__label">Midsole</div>
+          <div class="specs-row__val">Dual-density REACTFOAM+ (soft top / firm base)</div>
+        </div>
+        <div class="specs-row">
+          <div class="specs-row__label">Upper</div>
+          <div class="specs-row__val">Single-layer engineered mesh with welded overlays</div>
+        </div>
+        <div class="specs-row">
+          <div class="specs-row__label">Outsole</div>
+          <div class="specs-row__val">Zoned rubber patches (heel strike + forefoot)</div>
+        </div>
+        <div class="specs-row">
+          <div class="specs-row__label">Rated lifespan</div>
+          <div class="specs-row__val">~700km</div>
+        </div>
+      </div>
+    </div>
+    <div class="specs-section__image specs-scroll-img" id="specsScrollImg">
+      <img src="img-nimbvx-lateral.png" class="specs-scroll-img__layer is-active" alt="KOVA NIMBVX PRO view 1">
+      <img src="img-nimbvx-top.png" class="specs-scroll-img__layer" alt="KOVA NIMBVX PRO view 2">
+      <img src="img-nimbvx-detail.png" class="specs-scroll-img__layer" alt="KOVA NIMBVX PRO view 3">
+    </div>
+  </section>
+
+  <!-- Technical Breakdown -->
+  <section class="tech">
+    <h2 class="section-title reveal-title">Technical Breakdown</h2>
+    <div class="tech__grid stagger-children">
+      <div class="diagram">
+        <div class="diagram__img">
+          <img src="img-midsole.png" alt="Midsole cross-section">
+        </div>
+        <div class="diagram__body">
+          <p class="diagram__label">Midsole Cross-Section</p>
+          <p class="diagram__desc">Dual-density REACTFOAM+ layers with full-length carbon plate</p>
+        </div>
+      </div>
+      <div class="diagram">
+        <div class="diagram__img">
+          <img src="img-carbon-plate.png" alt="Carbon plate detail">
+        </div>
+        <div class="diagram__body">
+          <p class="diagram__label">Carbon Plate Detail</p>
+          <p class="diagram__desc">Dual-density REACTFOAM+ layers with full-length carbon plate</p>
+        </div>
+      </div>
+      <div class="diagram">
+        <div class="diagram__img">
+          <img src="img-outsole.png" alt="Outsole zone map">
+        </div>
+        <div class="diagram__body">
+          <p class="diagram__label">Outsole Zone Map</p>
+          <p class="diagram__desc">Zoned rubber patches — heel strike + forefoot coverage</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Made for Performance -->
+  <section class="performance">
+    <h2 class="section-title reveal-title">Made for Performance</h2>
+    <div class="performance__stats stagger-children">
+      <div class="stat">
+        <p class="stat__value">~700km</p>
+        <p class="stat__label">Rated lifespan</p>
+      </div>
+      <div class="stat">
+        <p class="stat__value">4:30–6:30</p>
+        <p class="stat__label">Optimal pace range (min/km)</p>
+      </div>
+      <div class="stat">
+        <p class="stat__value">218g</p>
+        <p class="stat__label">Weight — Men's US 9</p>
+      </div>
+      <div class="stat">
+        <p class="stat__value">Reduced fatigue</p>
+        <p class="stat__label">On back-to-back training days</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="reviews">
+    <h2 class="section-title reveal-title">From Runners Who Measure Everything</h2>
+    <div class="reviews__grid stagger-children">
+      <div class="review-card">
+        <p class="review-card__name">Marcus K.</p>
+        <p class="review-card__bio">Ultra runner · 3,200km/year</p>
+        <p class="review-card__meta">Verified Purchase · 812km logged</p>
+        <div class="review-card__stars">★★★★★</div>
+        <div class="review-card__divider"></div>
+        <p class="review-card__text">"Finally a carbon shoe that holds up past 500km. I've been through 3 pairs of race-only shoes in 18 months. This one's still performing at 812km. Every spec claim checks out."</p>
+      </div>
+      <div class="review-card">
+        <p class="review-card__name">Ravi P.</p>
+        <p class="review-card__bio">Sub-3h marathoner · Strava segment leader</p>
+        <p class="review-card__meta">Verified Purchase · 640km logged</p>
+        <div class="review-card__stars">★★★★★</div>
+        <div class="review-card__divider"></div>
+        <p class="review-card__text">"The drop is perfect for my gait and the dual-density foam actually does what it says. Soft on easy days, responsive at tempo. I compared the spec sheet against 6 other carbon shoes — nothing matches the use window."</p>
+      </div>
+      <div class="review-card">
+        <p class="review-card__name">Lena W.</p>
+        <p class="review-card__bio">Track club coach · 15+ years competitive running</p>
+        <p class="review-card__meta">Verified Purchase · 490km logged</p>
+        <div class="review-card__stars">★★★★★</div>
+        <div class="review-card__divider"></div>
+        <p class="review-card__text">"Stack height is exactly as listed — no marketing inflation. Heel drop transitions naturally. Minor note: lacing could be stiffer for wide feet, but the roomy toe box compensates. Would buy again."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bundle CTA -->
+  <section class="bundle-cta-section">
+    <h2 class="section-title reveal-title">Ready for the top performance experience?</h2>
+    <div class="bundle-cta__actions">
+      <a href="#size-select" class="cta-primary">ADD TO CART — $229</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__left">
+      <span class="footer__brand">KOVA</span>
+      <nav class="footer__links">
+        <a href="#">Products</a>
+        <a href="#">Technology</a>
+        <a href="#">Athletes</a>
+        <a href="#">About</a>
+        <a href="#">Returns</a>
+        <a href="#">Privacy</a>
+      </nav>
+    </div>
+    <span class="footer__copy">© 2026 KOVA. Run with reason.</span>
+  </footer>
+
+  <script>
+    // Scroll-driven specs image (factory)
+    function initScrollSpecs(sectionId, imgId) {
+      const section = document.getElementById(sectionId);
+      const layers  = document.querySelectorAll('#' + imgId + ' .specs-scroll-img__layer');
+      let current = 0;
+
+      function setLayer(index) {
+        if (index === current) return;
+        layers[current].classList.remove('is-active');
+        layers[index].classList.add('is-active');
+        current = index;
+      }
+
+      window.addEventListener('scroll', function () {
+        const rect = section.getBoundingClientRect();
+        const vh   = window.innerHeight;
+        const progress = (vh - rect.top) / (vh + rect.height);
+        if      (progress < 0.44) setLayer(0);
+        else if (progress < 0.66) setLayer(1);
+        else                      setLayer(2);
+      }, { passive: true });
+    }
+
+    initScrollSpecs('specsScrollSection', 'specsScrollImg');
+
+    // Hero carousel
+    let heroIndex = 0;
+    const heroSlides = document.querySelectorAll('#heroCarousel .hero__carousel__slide');
+    const heroDots   = document.querySelectorAll('#heroCarousel .hero__carousel__dot');
+
+    function heroCarouselGo(index) {
+      heroSlides[heroIndex].classList.remove('is-active');
+      heroDots[heroIndex].classList.remove('is-active');
+      heroIndex = (index + heroSlides.length) % heroSlides.length;
+      heroSlides[heroIndex].classList.add('is-active');
+      heroDots[heroIndex].classList.add('is-active');
+    }
+
+    function heroCarouselMove(dir) { heroCarouselGo(heroIndex + dir); }
+
+    setInterval(() => heroCarouselMove(1), 5000);
+
+    function toggleMenu() {
+      const btn = document.getElementById('hamburger');
+      const menu = document.getElementById('mobileMenu');
+      const open = btn.classList.toggle('is-open');
+      menu.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open);
+    }
+
+    // Scroll entrance animations
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-title, .stagger-children').forEach(el => {
+      revealObserver.observe(el);
+    });
+  </script>
+</body>
+</html>

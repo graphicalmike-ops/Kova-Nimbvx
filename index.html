@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOVA — Select a Persona</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --border: var(--white);
+      --border-hover: var(--white);
+      --muted: #fff;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────────────────── */
+    nav {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 40px 48px 40px;
+    }
+
+    .brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.25rem;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      font-style: italic;
+    }
+
+    /* ── Hero ─────────────────────────────────────────────────────────────── */
+    .hero {
+      padding: 0 48px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero__img {
+      width: 66.666%;
+      max-width: 900px;
+      height: 360px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      margin-bottom: 60px;
+    }
+
+    .hero__eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .hero__headline {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.75rem, 3.5vw, 3rem);
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      max-width: 14ch;
+    }
+
+    .hero__sub {
+      margin-top: 24px;
+      font-size: 0.9375rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Cards ────────────────────────────────────────────────────────────── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      flex: 1;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 48px;
+      border-right: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--white);
+      transition: background 0.2s ease, border-color 0.2s ease;
+      position: relative;
+    }
+
+    .card:last-child {
+      border-right: none;
+    }
+
+    .card:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .card:hover .card__cta {
+      transform: translateX(4px);
+    }
+
+    .card:hover .card__border-top {
+      background: var(--white);
+    }
+
+    .card__border-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--border);
+      transition: background 0.2s ease;
+    }
+
+    .card__num {
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .card__title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.375rem;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .card__type {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .card__desc {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .card__cta {
+      display: inline-block;
+      margin-top: 40px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: transform 0.2s ease;
+    }
+
+    /* ── Dashboard Access ────────────────────────────────────────────────── */
+    .dashboard-access {
+      border-top: 1px solid var(--border);
+    }
+
+    .dashboard-access__link {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding: 28px 48px;
+      text-decoration: none;
+      color: var(--white);
+      transition: background 0.2s ease;
+    }
+
+    .dashboard-access__link:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .dashboard-access__label {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .dashboard-access__sub {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      flex: 1;
+    }
+
+    .dashboard-access__cta {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: transform 0.2s ease;
+    }
+
+    .dashboard-access__link:hover .dashboard-access__cta {
+      transform: translateX(4px);
+    }
+
+    /* ── Footer ───────────────────────────────────────────────────────────── */
+    footer {
+      padding: 24px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer__left {
+      font-size: 0.6875rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .footer__right {
+      font-size: 0.6875rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="brand">KOVA</span>
+    <span class="tagline">Run with reason.</span>
+  </nav>
+
+  <section class="hero">
+    <img src="img-expert-hero.png" alt="KOVA NIMBVX PRO" class="hero__img">
+    <h1 class="hero__headline">Same product.<br>Three perspectives.</h1>
+    <p class="hero__sub">The product doesn't change. The presentation does. Select a persona to see how the same PDP shifts to answer a different first question.</p>
+  </section>
+
+  <div class="cards">
+
+    <a href="expert.html" class="card">
+      <div class="card__border-top"></div>
+      <span class="card__num">01</span>
+      <h2 class="card__title">The Expert</h2>
+      <p class="card__type">Specs-First Layout</p>
+      <p class="card__desc">Knows what they want. Enters for the tech data, exits with conviction. No fluff — just stack height, drop, plate, and durability proof.</p>
+      <span class="card__cta">View Layout →</span>
+    </a>
+
+    <a href="explorer.html" class="card">
+      <div class="card__border-top"></div>
+      <span class="card__num">02</span>
+      <h2 class="card__title">The Explorer</h2>
+      <p class="card__type">Story-First Layout</p>
+      <p class="card__desc">Browsing and discovering. Needs the vibe before the specs. Story, lifestyle imagery, and community proof come before anything technical.</p>
+      <span class="card__cta">View Layout →</span>
+    </a>
+
+    <a href="price-conscious.html" class="card">
+      <div class="card__border-top"></div>
+      <span class="card__num">03</span>
+      <h2 class="card__title">The Price-Conscious</h2>
+      <p class="card__type">Value-First Layout</p>
+      <p class="card__desc">Motivated by cost. Needs to know $229 is worth every kilometre. Price, bundles, and cost-per-km proof surface before anything else.</p>
+      <span class="card__cta">View Layout →</span>
+    </a>
+
+  </div>
+
+  <div class="dashboard-access">
+    <a href="dashboard.html" class="dashboard-access__link">
+      <span class="dashboard-access__label">Analytics Dashboard</span>
+      <span class="dashboard-access__sub">Layout performance · KPIs · A/B lift</span>
+      <span class="dashboard-access__cta">View Dashboard →</span>
+    </a>
+  </div>
+
+  <footer>
+    <span class="footer__left">KOVA © 2025</span>
+    <span class="footer__right">NIMBVX PRO — Daily Trainer, Race-Day Ready</span>
+  </footer>
+
+</body>
+</html>

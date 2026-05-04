@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOVA — PDP Analytics Dashboard</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --accent: #b21235;
+      --gray-light: #f5f5f5;
+      --gray-div: #e0e0e0;
+      --gray-bdr: #b3b3b3;
+      --pad: 96px;
+    }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* ── Nav ─────────────────────────────────────────────────────────────── */
+    nav {
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--pad);
+      height: 64px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav__brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--white);
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .nav__center {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav__links a {
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav__links a:hover { color: var(--white); }
+
+    .nav__links a.active {
+      color: var(--white);
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 2px;
+    }
+
+    /* ── Dashboard Header ─────────────────────────────────────────────────── */
+    .dash-header {
+      background: var(--black);
+      color: var(--white);
+      padding: 52px var(--pad) 60px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .dash-header__eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .dash-header__title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.25rem, 4vw, 3.75rem);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .dash-header__right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 14px;
+    }
+
+    .dash-header__meta {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+
+    .dash-header__badges {
+      display: flex;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--white);
+    }
+
+    .badge--on {
+      border-color: var(--accent);
+      color: var(--white);
+      background: rgba(178,18,53,0.15);
+    }
+
+    /* ── KPI Summary ──────────────────────────────────────────────────────── */
+    .kpi-summary {
+      background: var(--white);
+      padding: 40px var(--pad) 48px;
+      border-bottom: 1px solid var(--gray-div);
+    }
+
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border: 1px solid var(--gray-div);
+    }
+
+    .kpi-card {
+      padding: 28px 24px 24px;
+      border-right: 1px solid var(--gray-div);
+      position: relative;
+    }
+
+    .kpi-card:last-child { border-right: none; }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .kpi-card__label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-bottom: 14px;
+    }
+
+    .kpi-card__value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.25rem;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .kpi-card__delta {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      margin-bottom: 4px;
+    }
+
+    .kpi-card__sub {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--black);
+    }
+
+    /* ── Layout Breakdown ─────────────────────────────────────────────────── */
+    .layout-breakdown {
+      background: var(--white);
+      padding: 56px var(--pad);
+      border-bottom: 1px solid var(--gray-div);
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    .persona-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .persona-card {
+      border: 1px solid var(--gray-div);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .persona-card__header {
+      background: var(--black);
+      color: var(--white);
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .persona-card__name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      margin-bottom: 4px;
+    }
+
+    .persona-card__type {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .persona-card__sessions {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .persona-stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 24px;
+      border-bottom: 1px solid var(--gray-div);
+    }
+
+    .persona-stat:last-child { border-bottom: none; }
+    .persona-stat:nth-child(even) { background: var(--gray-light); }
+
+    .persona-stat__label {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    .persona-stat__val {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .persona-stat__num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .persona-stat__tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .persona-card__bar {
+      padding: 18px 24px;
+      background: var(--gray-light);
+      border-top: 1px solid var(--gray-div);
+      margin-top: auto;
+    }
+
+    .bar-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .bar-meta__label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+
+    .bar-meta__val {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .bar-track {
+      background: var(--gray-div);
+      height: 5px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+    }
+
+    /* ── Conversion Chart ─────────────────────────────────────────────────── */
+    .conversion-chart {
+      background: var(--gray-light);
+      padding: 56px var(--pad);
+      border-bottom: 1px solid var(--gray-div);
+    }
+
+    .chart-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 24px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .legend-dot--accent { background: var(--accent); }
+    .legend-dot--muted { background: var(--gray-bdr); }
+
+    .chart-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: 192px 1fr 64px;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .chart-row__label {
+      text-align: right;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .chart-row__sublabel {
+      display: block;
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--black);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .chart-row__track {
+      background: var(--gray-div);
+      height: 32px;
+      position: relative;
+    }
+
+    .chart-row__fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      background: var(--accent);
+    }
+
+    .chart-row__fill--muted { background: var(--gray-bdr); }
+
+    .chart-row__value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    /* ── Match Accuracy + A/B Lift ────────────────────────────────────────── */
+    .match-lift {
+      background: var(--black);
+      color: var(--white);
+      padding: 56px var(--pad);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 96px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .block-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .block-sub {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    .match-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .match-row__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .match-row__name {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .match-row__pct {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--white);
+    }
+
+    .match-track {
+      background: rgba(255,255,255,0.08);
+      height: 3px;
+    }
+
+    .match-fill {
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .match-row--overall .match-row__name { color: var(--white); }
+    .match-row--overall .match-fill { background: var(--white); }
+
+    .lift-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .lift-card {
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 24px 20px;
+    }
+
+    .lift-card__persona {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+
+    .lift-card__value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .lift-card__baseline {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.5;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────────────────── */
+    .footer {
+      background: var(--black);
+      color: var(--white);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--pad);
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer__left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .footer__brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+
+    .footer__links {
+      font-size: 11px;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+
+    .footer__copy {
+      font-size: 11px;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav__brand">KOVA</a>
+    <span class="nav__center">NIMBVX PRO &nbsp;·&nbsp; PDP Analytics</span>
+    <div class="nav__links">
+      <a href="expert.html">Expert</a>
+      <a href="explorer.html">Explorer</a>
+      <a href="price-conscious.html">Price-Conscious</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="dash-header">
+    <div>
+      <p class="dash-header__eyebrow">NIMBVX PRO — Adaptive PDP System</p>
+      <h1 class="dash-header__title">Layout Performance</h1>
+    </div>
+    <div class="dash-header__right">
+      <p class="dash-header__meta">Apr 1 – Apr 29, 2026 &nbsp;·&nbsp; 27,450 total sessions</p>
+      <div class="dash-header__badges">
+        <span class="badge badge--on">Expert</span>
+        <span class="badge badge--on">Explorer</span>
+        <span class="badge badge--on">Price-Conscious</span>
+        <span class="badge">Default PDP</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- KPI Summary -->
+  <section class="kpi-summary">
+    <p class="section-eyebrow">Cross-layout KPIs — 30-day average across all adaptive layouts</p>
+    <div class="kpi-grid">
+
+      <div class="kpi-card">
+        <p class="kpi-card__label">Avg Conversion Rate</p>
+        <p class="kpi-card__value">4.4%</p>
+        <p class="kpi-card__delta">▲ +83% vs. default PDP</p>
+        <p class="kpi-card__sub">Default baseline: 2.4%</p>
+      </div>
+
+      <div class="kpi-card">
+        <p class="kpi-card__label">Avg Order Value</p>
+        <p class="kpi-card__value">$249</p>
+        <p class="kpi-card__delta">▲ +7.8% vs. default PDP</p>
+        <p class="kpi-card__sub">Default baseline: $231</p>
+      </div>
+
+      <div class="kpi-card">
+        <p class="kpi-card__label">Avg Bounce Rate</p>
+        <p class="kpi-card__value">29%</p>
+        <p class="kpi-card__delta">▼ −34% vs. default PDP</p>
+        <p class="kpi-card__sub">Default baseline: 44%</p>
+      </div>
+
+      <div class="kpi-card">
+        <p class="kpi-card__label">Match Accuracy</p>
+        <p class="kpi-card__value">84%</p>
+        <p class="kpi-card__delta">Persona → layout signal</p>
+        <p class="kpi-card__sub">Behavioral assignment model</p>
+      </div>
+
+      <div class="kpi-card">
+        <p class="kpi-card__label">A/B Lift (avg)</p>
+        <p class="kpi-card__value">+82%</p>
+        <p class="kpi-card__delta">▲ CVR vs. single default PDP</p>
+        <p class="kpi-card__sub">Across all adaptive layouts</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Per-Layout Breakdown -->
+  <section class="layout-breakdown">
+    <h2 class="section-title">Per-Layout Performance</h2>
+    <div class="persona-grid">
+
+      <!-- Expert -->
+      <div class="persona-card">
+        <div class="persona-card__header">
+          <div>
+            <p class="persona-card__name">The Expert</p>
+            <p class="persona-card__type">Specs-First Layout</p>
+          </div>
+          <p class="persona-card__sessions">8,420 sessions</p>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Conversion Rate</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">4.8%</span>
+            <span class="persona-stat__tag">▲ +100%</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Avg Order Value</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">$229</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Bounce Rate</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">22%</span>
+            <span class="persona-stat__tag">Lowest</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Match Accuracy</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">91%</span>
+            <span class="persona-stat__tag">Highest</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">A/B Lift vs. Default</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">+100%</span>
+          </span>
+        </div>
+        <div class="persona-card__bar">
+          <div class="bar-meta">
+            <span class="bar-meta__label">CVR vs. peak (5.1%)</span>
+            <span class="bar-meta__val">4.8%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 94%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Explorer -->
+      <div class="persona-card">
+        <div class="persona-card__header">
+          <div>
+            <p class="persona-card__name">The Explorer</p>
+            <p class="persona-card__type">Story-First Layout</p>
+          </div>
+          <p class="persona-card__sessions">12,840 sessions</p>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Conversion Rate</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">3.2%</span>
+            <span class="persona-stat__tag">▲ +33%</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Avg Order Value</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">$267</span>
+            <span class="persona-stat__tag">Highest AOV</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Bounce Rate</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">38%</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Match Accuracy</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">76%</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">A/B Lift vs. Default</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">+33%</span>
+          </span>
+        </div>
+        <div class="persona-card__bar">
+          <div class="bar-meta">
+            <span class="bar-meta__label">CVR vs. peak (5.1%)</span>
+            <span class="bar-meta__val">3.2%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 63%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price-Conscious -->
+      <div class="persona-card">
+        <div class="persona-card__header">
+          <div>
+            <p class="persona-card__name">Price-Conscious</p>
+            <p class="persona-card__type">Value-First Layout</p>
+          </div>
+          <p class="persona-card__sessions">6,190 sessions</p>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Conversion Rate</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">5.1%</span>
+            <span class="persona-stat__tag">▲ +112% · Peak</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Avg Order Value</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">$251</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Bounce Rate</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">29%</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">Match Accuracy</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">84%</span>
+          </span>
+        </div>
+        <div class="persona-stat">
+          <span class="persona-stat__label">A/B Lift vs. Default</span>
+          <span class="persona-stat__val">
+            <span class="persona-stat__num">+112%</span>
+            <span class="persona-stat__tag">Top lift</span>
+          </span>
+        </div>
+        <div class="persona-card__bar">
+          <div class="bar-meta">
+            <span class="bar-meta__label">CVR vs. peak (5.1%)</span>
+            <span class="bar-meta__val">5.1%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 100%;"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Conversion Rate Chart -->
+  <section class="conversion-chart">
+    <div class="chart-top">
+      <h2 class="section-title" style="margin-bottom:0;">Conversion Rate Comparison</h2>
+      <div class="chart-legend">
+        <div class="legend-item">
+          <div class="legend-dot legend-dot--accent"></div>
+          Adaptive layout
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot legend-dot--muted"></div>
+          Default PDP baseline
+        </div>
+      </div>
+    </div>
+    <div class="chart-rows">
+      <div class="chart-row">
+        <p class="chart-row__label">The Expert <span class="chart-row__sublabel">Specs-First</span></p>
+        <div class="chart-row__track">
+          <div class="chart-row__fill" style="width: 94%;"></div>
+        </div>
+        <p class="chart-row__value">4.8%</p>
+      </div>
+      <div class="chart-row">
+        <p class="chart-row__label">The Explorer <span class="chart-row__sublabel">Story-First</span></p>
+        <div class="chart-row__track">
+          <div class="chart-row__fill" style="width: 63%;"></div>
+        </div>
+        <p class="chart-row__value">3.2%</p>
+      </div>
+      <div class="chart-row">
+        <p class="chart-row__label">Price-Conscious <span class="chart-row__sublabel">Value-First</span></p>
+        <div class="chart-row__track">
+          <div class="chart-row__fill" style="width: 100%;"></div>
+        </div>
+        <p class="chart-row__value">5.1%</p>
+      </div>
+      <div class="chart-row">
+        <p class="chart-row__label">Default PDP <span class="chart-row__sublabel">Baseline</span></p>
+        <div class="chart-row__track">
+          <div class="chart-row__fill chart-row__fill--muted" style="width: 47%;"></div>
+        </div>
+        <p class="chart-row__value">2.4%</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Match Accuracy + A/B Lift -->
+  <section class="match-lift">
+
+    <div>
+      <h2 class="block-title">Persona Match Accuracy</h2>
+      <p class="block-sub">How often the behaviorally-assigned layout matches actual purchase intent.</p>
+      <div class="match-rows">
+        <div>
+          <div class="match-row__head">
+            <span class="match-row__name">The Expert</span>
+            <span class="match-row__pct">91%</span>
+          </div>
+          <div class="match-track"><div class="match-fill" style="width: 91%;"></div></div>
+        </div>
+        <div>
+          <div class="match-row__head">
+            <span class="match-row__name">The Explorer</span>
+            <span class="match-row__pct">76%</span>
+          </div>
+          <div class="match-track"><div class="match-fill" style="width: 76%;"></div></div>
+        </div>
+        <div>
+          <div class="match-row__head">
+            <span class="match-row__name">Price-Conscious</span>
+            <span class="match-row__pct">84%</span>
+          </div>
+          <div class="match-track"><div class="match-fill" style="width: 84%;"></div></div>
+        </div>
+        <div class="match-row--overall">
+          <div class="match-row__head">
+            <span class="match-row__name">Overall Average</span>
+            <span class="match-row__pct">84%</span>
+          </div>
+          <div class="match-track"><div class="match-fill" style="width: 84%;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="block-title">A/B Test Lift</h2>
+      <p class="block-sub">Conversion rate uplift vs. a single default PDP run concurrently across 5,000 sessions.</p>
+      <div class="lift-cards">
+        <div class="lift-card">
+          <p class="lift-card__persona">Expert</p>
+          <p class="lift-card__value">+100%</p>
+          <p class="lift-card__baseline">4.8% vs. 2.4% baseline</p>
+        </div>
+        <div class="lift-card">
+          <p class="lift-card__persona">Explorer</p>
+          <p class="lift-card__value">+33%</p>
+          <p class="lift-card__baseline">3.2% vs. 2.4% baseline</p>
+        </div>
+        <div class="lift-card">
+          <p class="lift-card__persona">Price-Conscious</p>
+          <p class="lift-card__value">+112%</p>
+          <p class="lift-card__baseline">5.1% vs. 2.4% baseline</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__left">
+      <span class="footer__brand">KOVA</span>
+      <span class="footer__links">Products &nbsp;·&nbsp; Technology &nbsp;·&nbsp; Athletes &nbsp;·&nbsp; About &nbsp;·&nbsp; Returns &nbsp;·&nbsp; Privacy</span>
+    </div>
+    <span class="footer__copy">© 2025 KOVA. Run with reason.</span>
+  </footer>
+
+</body>
+</html>
